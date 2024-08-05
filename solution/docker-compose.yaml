@@ -15,5 +15,5 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - /home/ec2-user/atul/solution/prometheus:/etc/prometheus/
+      - /home/ec2-user/atul/solution/prometheus:/etc/prometheus/:Z
 
