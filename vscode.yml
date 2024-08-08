@@ -1,25 +1,29 @@
 ---
-- name: Setup Node.js and build tools
-  hosts: your_target_hosts
+name: Install Node.js
+  hosts: all
   become: yes
-  tasks:
-    - name: Update apt cache
-      apt:
-        update_cache: yes
 
-    - name: Install build-essential and curl
-      apt:
-        name:
-          - build-essential
-          - curl
+  tasks:
+    - name: Add NodeSource repository
+      apt_key:
+        url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
         state: present
 
-    - name: Add NodeSource repository
-      shell: curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-      args:
-        warn: no
+    - name: Add NodeSource Node.js 14.x repo
+      apt_repository:
+        repo: deb https://deb.nodesource.com/node_14.x {{ ansible_distribution_release }} main
+        state: present
+        update_cache: yes
 
     - name: Install Node.js
       apt:
         name: nodejs
         state: present
+
+    - name: Verify Node.js installation
+      command: node -v
+      register: node_version
+
+    - name: Display Node.js version
+      debug:
+        msg: "Node.js version installed: {{ node_version.stdout }}"
