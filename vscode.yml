@@ -3,10 +3,6 @@
   hosts: all
   become: yes  # Ensure you have sudo privileges if needed
   tasks:
-    - name: Add NodeSource repository
-      apt_key:
-        url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-        state: present
 
     - name: Add NodeSource Node.js 14.x repo
       apt_repository:
