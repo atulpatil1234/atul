@@ -7,20 +7,7 @@
       apt:
         update_cache: yes
 
-    - name: Install Node.js
+    - name: Install sshpass
       apt:
-        name: nodejs
+        name: sshpass
         state: present
-
-    - name: Install npm (optional, but often needed with Node.js)
-      apt:
-        name: npm
-        state: present
-
-    - name: Verify Node.js installation
-      command: node -v
-      register: node_version
-
-    - name: Display Node.js version
-      debug:
-        msg: "Node.js version installed: {{ node_version.stdout }}"
