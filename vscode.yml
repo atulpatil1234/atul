@@ -1,0 +1,25 @@
+---
+- name: Setup Node.js and build tools
+  hosts: your_target_hosts
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install build-essential and curl
+      apt:
+        name:
+          - build-essential
+          - curl
+        state: present
+
+    - name: Add NodeSource repository
+      shell: curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+      args:
+        warn: no
+
+    - name: Install Node.js
+      apt:
+        name: nodejs
+        state: present
