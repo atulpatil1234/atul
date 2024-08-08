@@ -1,7 +1,5 @@
 ---
-name: Install Node.js
-  hosts: all
-  become: yes
+- name: Install Node.js
 
   tasks:
     - name: Add NodeSource repository
