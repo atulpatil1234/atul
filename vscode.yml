@@ -1,18 +1,20 @@
----
 - name: Install Node.js
   hosts: all
   become: yes  # Ensure you have sudo privileges if needed
   tasks:
 
-    - name: Add NodeSource Node.js 14.x repo
-      apt_repository:
-        repo: deb https://deb.nodesource.com/node_14.x {{ ansible_distribution_release }} main
-        state: present
+    - name: Update apt cache
+      apt:
         update_cache: yes
 
     - name: Install Node.js
       apt:
         name: nodejs
+        state: present
+
+    - name: Install npm (optional, but often needed with Node.js)
+      apt:
+        name: npm
         state: present
 
     - name: Verify Node.js installation
