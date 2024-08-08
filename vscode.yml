@@ -1,6 +1,7 @@
 ---
 - name: Install Node.js
-
+  hosts: all
+  become: yes  # Ensure you have sudo privileges if needed
   tasks:
     - name: Add NodeSource repository
       apt_key:
