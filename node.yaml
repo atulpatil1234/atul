@@ -3,7 +3,7 @@
   hosts: all
   become: yes  # Ensure you have sudo privileges if needed
   tasks:
-  - name: Ensure /usr/local/share/packages directory exists
+- name: Ensure /usr/local/share/packages directory exists
     file:
       path: "/usr/local/share/packages"
       state: directory
@@ -11,8 +11,6 @@
       owner: developers
       group: developers
       recurse: yes
-
-
 - name: Download Node.js tarball
   get_url:
     url: "https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.gz"
@@ -27,7 +25,8 @@
     mode: 0755
     owner: developers
     group: developers
-  - name: Create a symbolic link
+    
+- name: Create a symbolic link
     file:
        src: /usr/local/share/packages/node-v12.16.1-linux-x64/lib/node_modules
        dest: /home/developers/node_modules
@@ -35,14 +34,14 @@
        group: developers
        state: link
        remote_src: yes      
-  - name: add a new string to bashrc file of root
+- name: add a new string to bashrc file of root
     lineinfile: 
       path: /root/.bashrc 
       regexp: '$#fi'
       insertafter: EOF
       line: "export PATH=/usr/local/share/packages/node-v12.16.1-linux-x64/bin:$PATH"       
 
-  - name: add a new string to bashrc file of home developers
+- name: add a new string to bashrc file of home developers
     lineinfile:
       path: /home/developers/.bashrc
       regexp: '$fi'
