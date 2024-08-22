@@ -49,13 +49,13 @@
       lineinfile:
         path: /root/.bashrc
         insertafter: EOF
-        line: "export PATH=/usr/local/share/packages/node-v12.16.1-linux-x64/bin:$PATH /nexport PATH=$PATH:/usr/local/bin"
+        line: "export PATH=/usr/local/share/packages/node-v12.16.1-linux-x64/bin:$PATH \nexport PATH=$PATH:/usr/local/bin"
 
     - name: Add Node.js to developer's PATH in .bashrc
       lineinfile:
         path: /home/developers/.bashrc
         insertafter: EOF
-        line: "export PATH=/usr/local/share/packages/node-v12.16.1-linux-x64/bin:$PATH export PATH=$PATH:/usr/local/bin"
+        line: "export PATH=/usr/local/share/packages/node-v12.16.1-linux-x64/bin:$PATH \nexport PATH=$PATH:/usr/local/bin"
 
     - name: Install Node.js modules globally
       shell: |
