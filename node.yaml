@@ -1,4 +1,5 @@
-  - name: Install Node.js
+---
+- name: Install Node.js
   hosts: all
   become: yes  # Ensure you have sudo privileges if needed
   tasks:
