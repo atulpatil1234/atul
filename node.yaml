@@ -2,6 +2,8 @@
 - name: Install Node.js
   hosts: all
   become: yes  # Ensure you have sudo privileges if needed
+  vars:
+   - developers: nciportal
   tasks:
     - name: Create developer user
       user:
