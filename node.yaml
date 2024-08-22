@@ -3,6 +3,14 @@
   hosts: all
   become: yes  # Ensure you have sudo privileges if needed
   tasks:
+    - name: Create developer user
+      user:
+        name: developers
+        password: "{{ developers | password_hash('sha512') }}"
+        shell: /bin/bash
+        update_password: on_create
+        createhome: yes
+
     - name: Ensure /usr/local/share/packages directory exists
       file:
         path: "/usr/local/share/packages"
