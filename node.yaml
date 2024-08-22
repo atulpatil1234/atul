@@ -3,7 +3,7 @@
   hosts: all
   become: yes  # Ensure you have sudo privileges if needed
   tasks:
-  - name: create remote directory
+  - name: Ensure /usr/local/share/packages directory exists
     file:
       path: "/usr/local/share/packages"
       state: directory
