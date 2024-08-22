@@ -1,0 +1,69 @@
+---
+- name: Install development tools and libraries
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update apt repository
+      apt:
+        update_cache: yes
+
+    - name: Install necessary packages for GUI and other tools
+      apt:
+        name:
+          - wget
+          - python3.8
+          - python3-pip
+          - libgl1-mesa-glx  # Required for GUI applications
+          - libqt5widgets5  # Qt5 widgets for GUI
+        state: present
+
+    - name: Download and install VS Code
+      get_url:
+        url: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+        dest: /tmp/code_latest_amd64.deb
+
+    - name: Install VS Code package
+      apt:
+        deb: /tmp/code_latest_amd64.deb
+
+    - name: Install Conda via pip
+      pip:
+        name: conda
+        state: present
+        executable: pip3
+
+    - name: Install Spyder 3.2.6 and GUI dependencies
+      pip:
+        name:
+          - spyder==3.2.6
+          - pyqt5  # Required for Spyder GUI
+        state: present
+        executable: pip3
+
+    - name: Install paho-mqtt 1.5.0
+      pip:
+        name: paho-mqtt==1.5.0
+        state: present
+        executable: pip3
+
+    - name: Install mosquitto
+      apt:
+        name: mosquitto
+        state: present
+
+    - name: Install hdf5 (via python-h5py)
+      apt:
+        name: python3-h5py
+        state: present
+
+    - name: Install pyserial
+      pip:
+        name: pyserial
+        state: present
+        executable: pip3
+
+    - name: Install numpy
+      pip:
+        name: numpy
+        state: present
+        executable: pip3
