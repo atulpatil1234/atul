@@ -13,14 +13,20 @@
       recurse: yes
 
 
-  - name: untar nodejs 
-    unarchive:
-      src: "https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.gz"
-      dest: "/usr/local/share/packages"
-      remote_src: yes
-      mode: 0755
-      owner: developers
-      group: developers
+- name: Download Node.js tarball
+  get_url:
+    url: "https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.gz"
+    dest: "/tmp/node-v12.16.1-linux-x64.tar.gz"
+    timeout: 120  # Timeout in seconds (adjust as necessary)
+
+- name: Untar Node.js
+  unarchive:
+    src: "/tmp/node-v12.16.1-linux-x64.tar.gz"
+    dest: "/usr/local/share/packages"
+    remote_src: yes
+    mode: 0755
+    owner: developers
+    group: developers
   - name: Create a symbolic link
     file:
        src: /usr/local/share/packages/node-v12.16.1-linux-x64/lib/node_modules
