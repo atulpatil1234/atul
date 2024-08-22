@@ -3,47 +3,46 @@
   hosts: all
   become: yes  # Ensure you have sudo privileges if needed
   tasks:
-- name: Ensure /usr/local/share/packages directory exists
-    file:
-      path: "/usr/local/share/packages"
-      state: directory
-      mode: 0755
-      owner: developers
-      group: developers
-      recurse: yes
-- name: Download Node.js tarball
-  get_url:
-    url: "https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.gz"
-    dest: "/tmp/node-v12.16.1-linux-x64.tar.gz"
-    timeout: 120  # Timeout in seconds (adjust as necessary)
+    - name: Ensure /usr/local/share/packages directory exists
+      file:
+        path: "/usr/local/share/packages"
+        state: directory
+        mode: '0755'
+        owner: developers
+        group: developers
+        recurse: yes
 
-- name: Untar Node.js
-  unarchive:
-    src: "/tmp/node-v12.16.1-linux-x64.tar.gz"
-    dest: "/usr/local/share/packages"
-    remote_src: yes
-    mode: 0755
-    owner: developers
-    group: developers
-    
-- name: Create a symbolic link
-    file:
-       src: /usr/local/share/packages/node-v12.16.1-linux-x64/lib/node_modules
-       dest: /home/developers/node_modules
-       owner: developers
-       group: developers
-       state: link
-       remote_src: yes      
-- name: add a new string to bashrc file of root
-    lineinfile: 
-      path: /root/.bashrc 
-      regexp: '$#fi'
-      insertafter: EOF
-      line: "export PATH=/usr/local/share/packages/node-v12.16.1-linux-x64/bin:$PATH"       
+    - name: Download Node.js tarball
+      get_url:
+        url: "https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.gz"
+        dest: "/tmp/node-v12.16.1-linux-x64.tar.gz"
+        timeout: 120  # Timeout in seconds (adjust as necessary)
 
-- name: add a new string to bashrc file of home developers
-    lineinfile:
-      path: /home/developers/.bashrc
-      regexp: '$fi'
-      insertafter: EOF
-      line: "export PATH=/usr/local/share/packages/node-v12.16.1-linux-x64/bin:$PATH"
+    - name: Untar Node.js
+      unarchive:
+        src: "/tmp/node-v12.16.1-linux-x64.tar.gz"
+        dest: "/usr/local/share/packages"
+        remote_src: yes
+        mode: '0755'
+        owner: developers
+        group: developers
+
+    - name: Create a symbolic link
+      file:
+        src: /usr/local/share/packages/node-v12.16.1-linux-x64/lib/node_modules
+        dest: /home/developers/node_modules
+        state: link
+        owner: developers
+        group: developers
+
+    - name: Add Node.js to root's PATH in .bashrc
+      lineinfile:
+        path: /root/.bashrc
+        insertafter: EOF
+        line: "export PATH=/usr/local/share/packages/node-v12.16.1-linux-x64/bin:$PATH"
+
+    - name: Add Node.js to developer's PATH in .bashrc
+      lineinfile:
+        path: /home/developers/.bashrc
+        insertafter: EOF
+        line: "export PATH=/usr/local/share/packages/node-v12.16.1-linux-x64/bin:$PATH"
