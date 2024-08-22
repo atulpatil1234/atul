@@ -23,8 +23,7 @@
         dest: /tmp/code_latest_amd64.deb
 
     - name: Install VS Code package
-      apt:
-        deb: /tmp/code_latest_amd64.deb
+      command: dpkg -i /tmp/code_latest_amd64.deb
 
     - name: Install Conda via pip
       pip:
