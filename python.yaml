@@ -1,4 +1,3 @@
----
 - name: Install development tools and libraries
   hosts: all
   become: yes
@@ -13,10 +12,17 @@
           - wget
           - python3.8
           - python3-pip
-          - libgl1-mesa-glx  # Required for GUI applications
-          - libqt5widgets5  # Qt5 widgets for GUI
+          - libgl1-mesa-glx
+          - libqt5widgets5
         state: present
 
+    - name: Upgrade pip and setuptools
+      pip:
+        name:
+          - pip
+          - setuptools
+        state: latest
+        executable: pip3
 
     - name: Install Conda via pip
       pip:
@@ -24,11 +30,15 @@
         state: present
         executable: pip3
 
-    - name: Install Spyder 3.2.6 and GUI dependencies
+    - name: Install pyqt5 separately
       pip:
-        name:
-          - spyder==3.2.6
-          - pyqt5  # Required for Spyder GUI
+        name: pyqt5==5.15.6
+        state: present
+        executable: pip3
+
+    - name: Install Spyder 3.2.6
+      pip:
+        name: spyder==3.2.6
         state: present
         executable: pip3
 
