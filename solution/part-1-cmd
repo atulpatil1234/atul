@@ -1,2 +1,0 @@
-docker run -td -p 9393:9393 app
-
