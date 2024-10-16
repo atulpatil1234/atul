@@ -1,0 +1,31 @@
+---
+- name: Check system utilization
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Check memory usage
+      command: free | grep Mem | awk '{print $3/$2 * 100.0}'
+      register: memory_usage
+
+    - name: Check CPU usage
+      command: mpstat 1 1 | grep "Average" | awk '{print 100 - $12}'
+      register: cpu_usage
+
+    - name: Check disk usage
+      command: df -h --total | grep 'total' | awk '{print $5}' | sed 's/%//'
+      register: disk_usage
+
+    - name: Report high memory usage
+      debug:
+        msg: "Warning: Memory usage is above 70% (Current: {{ memory_usage.stdout | round(2) }}%)"
+      when: memory_usage.stdout | float > 70
+
+    - name: Report high CPU usage
+      debug:
+        msg: "Warning: CPU usage is above 70% (Current: {{ cpu_usage.stdout | round(2) }}%)"
+      when: cpu_usage.stdout | float > 70
+
+    - name: Report high disk usage
+      debug:
+        msg: "Warning: Disk usage is above 70% (Current: {{ disk_usage.stdout | int }})%"
+      when: disk_usage.stdout | int > 70
